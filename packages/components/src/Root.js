@@ -26,20 +26,47 @@ const themedCode = props => ({
   },
 })
 
-export const Root = styled.div(
+const Outer = styled.div(props =>
+  props.theme.aspectRatio
+    ? {
+        width: '100%',
+        height: 0,
+        paddingBottom: props.theme.aspectRatio * 100 + '%',
+        position: 'relative',
+        outline: '1px solid tomato',
+      }
+    : {
+        width: '100vw',
+        height: '100vh',
+      }
+)
+
+const Inner = styled.div(
   props => ({
     fontFamily: props.theme.font,
     color: props.theme.colors.text,
     backgroundColor: props.theme.colors.background,
-    // testing
-    width: '100vw',
-    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   }),
+  props =>
+    props.theme.aspectRatio
+      ? {
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          margin: 'auto',
+          outline: '1px solid cyan',
+        }
+      : {
+          width: '100vw',
+          height: '100vh',
+        },
   props => props.theme.css,
   props => props.theme.Slide,
   themedLinks,
@@ -64,6 +91,12 @@ export const Root = styled.div(
     'pre',
     'code'
   )
+)
+
+export const Root = props => (
+  <Outer>
+    <Inner {...props} />
+  </Outer>
 )
 
 export default Root
